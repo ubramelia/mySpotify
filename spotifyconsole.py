@@ -36,3 +36,32 @@ class SpotifyConsole:
         )
         data = response.json()
         return data
+
+    def _get_user_recent_track(self, limit):
+        """This will get the user's playlist w/ a limit"""
+        response = requests.get(
+            url = f"https://api.spotify.com/v1/me/player/recently-played?limit={limit}",
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self._oauthtoken}"
+            }
+        )
+        data = response.json()
+        return data
+
+    def _create_user_playlist(self, userID, playlistName, playlistDesc):
+        """this creates a new user playlist for the user"""
+        data = json.dumps({
+            "name": playlistName,
+            "description": playlistDesc
+        })
+        response = requests.post(
+            url = f"https://api.spotify.com/v1/users/{userID}/playlists",
+            data = data,
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self._oauthtoken}"
+            }
+        )
+        data = response.json()
+        return data
